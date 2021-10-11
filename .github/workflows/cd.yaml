@@ -1,0 +1,34 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - "main"
+    tags:
+      - "v*"
+
+jobs:
+  deploy_test:
+    runs-on: ubuntu-latest
+    if: contains(github.ref, 'heads')
+    name: Deploy Test
+    environment: test
+    steps:
+      - run: echo "Deploy Test"
+
+  deploy_dev:
+    runs-on: ubuntu-latest
+    if: contains(github.ref, 'tags')
+    name: Deploy Dev
+    environment: dev
+    steps:
+      - run: echo "Deploy Dev"
+
+  deploy_prod:
+    runs-on: ubuntu-latest
+    if: contains(github.ref, 'tags')
+    needs: ['deploy_dev']
+    name: Deploy Prod
+    environment: prod
+    steps:
+      - run: echo "Deploy Prod"

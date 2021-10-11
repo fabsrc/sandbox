@@ -34,14 +34,13 @@ jobs:
           push: false
           tags: fabsrc/sandbox:${{ steps.prep.outputs.VERSION }}
           file: ./Dockerfile
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
       - name: Test
-        run: docker run --rm fabsrc/sandbox:${{ steps.docker_build.outputs.digest }}
+        run: docker run --rm fabsrc/sandbox:${{ steps.prep.outputs.VERSION }}
 
   deploy_test:
     runs-on: ubuntu-latest
     if: contains(github.ref, 'heads')
+    needs: ["build"]
     name: Deploy Test
     environment: test
     steps:
@@ -50,6 +49,7 @@ jobs:
   deploy_dev:
     runs-on: ubuntu-latest
     if: contains(github.ref, 'tags')
+    needs: ["build"]
     name: Deploy Dev
     environment: dev
     steps:
@@ -58,7 +58,7 @@ jobs:
   deploy_prod:
     runs-on: ubuntu-latest
     if: contains(github.ref, 'tags')
-    needs: ["deploy_dev"]
+    needs: ["build", "deploy_dev"]
     name: Deploy Prod
     environment: prod
     steps:

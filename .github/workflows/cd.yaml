@@ -10,6 +10,9 @@ on:
 jobs:
   deploy:
     name: Deploy 
+    if: |
+      (contains(github.ref, 'heads') && matrix.env == 'dev') ||
+      (contains(github.ref, 'tags') && (matrix.env == 'stg' || matrix.env == 'prd'))
     runs-on: ubuntu-latest
     strategy:
       matrix:

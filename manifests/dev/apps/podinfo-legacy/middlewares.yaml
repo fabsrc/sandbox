@@ -1,0 +1,19 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: podinfo-legacy-path-rewrite
+  namespace: apps
+spec:
+  stripPrefix:
+    prefixes:
+      - /legacy
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: podinfo-legacy-trailing-slash
+  namespace: apps
+spec:
+  redirectRegex:
+    regex: ^(.*)/legacy$
+    replacement: "${1}/legacy/"

@@ -20,4 +20,11 @@ spec:
   # https://github.com/stefanprodan/podinfo/blob/master/charts/podinfo/values.yaml
   values:
     ingress:
-      enabled: false
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: traefik
+      hosts:
+        - host: raspberrypi.local
+          paths:
+            - path: /
+              pathType: ImplementationSpecific

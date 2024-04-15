@@ -12,6 +12,7 @@ jobs:
     name: Debug
     runs-on: ubuntu-latest
     steps:
+      - run: env
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}

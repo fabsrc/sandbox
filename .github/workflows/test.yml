@@ -14,6 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: echo "${{ inputs.test }}"
+      - run: env
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}

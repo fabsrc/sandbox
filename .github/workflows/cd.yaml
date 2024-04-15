@@ -8,21 +8,6 @@ on:
       - "v*"
 
 jobs:
-  deploy:
-    name: Deploy 
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        env: [dev, stg, prd]
-    env: 	
-      ENV: ${{ matrix.env }}
-    if: |
-      (contains(github.ref, 'heads') && env.ENV == 'dev') ||
-      (contains(github.ref, 'tags') && (env.ENV == 'stg' || env.ENV == 'prd'))
-    environment: ${{ matrix.env }}
-    steps:
-      - run: echo $ENV
-
   debug:
     name: Debug
     runs-on: ubuntu-latest

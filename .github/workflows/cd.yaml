@@ -34,3 +34,9 @@ jobs:
     uses: ./.github/workflows/test.yml
     with:
       test: "Hello"
+
+  more-tests:
+    name: More Tests
+    uses: ./.github/workflows/test.yml
+    with:
+      test: "Hello 2"

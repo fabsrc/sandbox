@@ -52,8 +52,10 @@ jobs:
               const { data: commit } = await github.rest.repos.getCommit({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                ref: firstSha,
+                ref: sha,
               });
+
+              console.log(commit);
 
               if (commit) {
                 return sha;

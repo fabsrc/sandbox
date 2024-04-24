@@ -12,8 +12,6 @@ jobs:
     name: Debug
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          sudo apt update
       - run: env
       - name: Dump GitHub context
         env:
@@ -43,3 +41,22 @@ jobs:
     uses: ./.github/workflows/test.yml
     with:
       test: "Hello 2"
+
+  deploy-stg:
+    name: deploy-stg
+    runs-on: ubuntu-latest
+    environment: stg
+    steps:
+      - uses: actions/github-script@v7
+        id: get-last-deploy
+        with:
+          result-encoding: string
+          retries: 3
+          script: |
+            github.rest.repos.listDeployments({
+              owner: "fabsrc",
+              repo: "sandbox",
+              environment: "stg",
+              ref: "main"
+            });
+      - run: echo "Deploy to stg"

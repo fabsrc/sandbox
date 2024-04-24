@@ -30,10 +30,10 @@ jobs:
           RUNNER_CONTEXT: ${{ toJson(runner) }}
         run: echo "$RUNNER_CONTEXT"
 
-  deploy-stg:
-    name: deploy-stg
+  deploy-new:
+    name: deploy-new
     runs-on: ubuntu-latest
-    environment: stg
+    environment: new
     steps:
       - uses: actions/github-script@v7
         id: get-last-deploy
@@ -44,9 +44,10 @@ jobs:
             const {data} = await github.rest.repos.listDeployments({
               owner: "fabsrc",
               repo: "sandbox",
-              environment: "stg",
+              environment: "new",
               ref: "main"
             });
             console.log(data.at(0));
             console.log(data.at(1));
-      - run: echo "Deploy to stg"
+            console.log(data.at(1) || "f4749d7f252b1d0f275811c5ebc9020dc73d11ab")
+      - run: echo "Deploy to new"

@@ -41,11 +41,12 @@ jobs:
           result-encoding: string
           retries: 3
           script: |
-            const res = await github.rest.repos.listDeployments({
+            const {data} = await github.rest.repos.listDeployments({
               owner: "fabsrc",
               repo: "sandbox",
               environment: "stg",
               ref: "main"
             });
-            console.log(res);
+            console.log(data.at(0));
+            console.log(data.at(1));
       - run: echo "Deploy to stg"

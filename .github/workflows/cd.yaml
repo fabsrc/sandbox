@@ -39,14 +39,34 @@ jobs:
           result-encoding: string
           retries: 3
           script: |
-            const { data } = await github.rest.repos.listDeployments({
+            const query = `query getLatestDeployments($owner: String!, $name: String!, $environment: String!) {
+              repository(owner: $owner, name: $name) {
+                id
+                deployments(environments: [$environment], last: 20) {
+                  nodes {
+                    id
+                    state
+                    createdAt
+                    commitOid
+                  }
+                }
+              }
+            }`;
+            const variables = {
               owner: context.repo.owner,
-              repo: context.repo.repo,
-              environment: "new",
-            });
+              name: context.repo.repo,
+              environment: "new"
+            };
+            const result = await github.graphql(query, variables);
+
+            console.log(result);
+
+            const activeDeployment = result.repository.deployments.nodes.find(deployment => deployment.state === "ACTIVE");
+            const sha = activeDeployment?.commitOid;
+
+            console.log(sha);
 
             const firstSha = "f4749d7f252b1d0f275811c5ebc9020dc73d11ab";
-            const sha = data.at(1)?.sha;
 
             // Check if previousd deploy commit is still part of the branch
             if (sha) {

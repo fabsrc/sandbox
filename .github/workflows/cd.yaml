@@ -45,9 +45,22 @@ jobs:
               environment: "new",
             });
 
-            console.log(data);
+            const firstSha = "f4749d7f252b1d0f275811c5ebc9020dc73d11ab";
+            const sha = data.at(1)?.sha;
 
-            return data.at(1)?.sha || "f4749d7f252b1d0f275811c5ebc9020dc73d11ab";
+            if (sha) {
+              const { data: commit } = await github.rest.repos.getCommit({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: firstSha,
+              });
+
+              if (commit) {
+                return sha;
+              }
+            }
+
+            return firstSha;
       - run: |
           echo "previous: ${{ steps.previous-deploy.outputs.result }}"
           git diff ${{ steps.previous-deploy.outputs.result }}

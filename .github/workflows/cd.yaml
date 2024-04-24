@@ -47,4 +47,4 @@ jobs:
             return data.at(1)?.sha || "f4749d7f252b1d0f275811c5ebc9020dc73d11ab";
       - run: |
           echo "previous: ${{ steps.previous-deploy.outputs.result }}"
-        
+          git diff ${{ steps.previous-deploy.outputs.result }}

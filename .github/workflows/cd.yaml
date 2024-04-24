@@ -12,7 +12,8 @@ jobs:
     name: Debug
     runs-on: ubuntu-latest
     steps:
-      - run: cat /etc/apt/apt-mirrors.txt
+      - run: |
+          sudo apt update
       - run: env
       - name: Dump GitHub context
         env:

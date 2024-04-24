@@ -8,9 +8,10 @@ on:
       - "v*"
 
 jobs:
-  debug:
-    name: Debug
+  deploy-new:
+    name: deploy-new
     runs-on: ubuntu-latest
+    environment: new
     steps:
       - run: env
       - name: Dump GitHub context
@@ -29,25 +30,22 @@ jobs:
         env:
           RUNNER_CONTEXT: ${{ toJson(runner) }}
         run: echo "$RUNNER_CONTEXT"
-
-  deploy-new:
-    name: deploy-new
-    runs-on: ubuntu-latest
-    environment: new
-    steps:
       - uses: actions/github-script@v7
-        id: get-last-deploy
+        id: previous-deploy
         with:
           result-encoding: string
           retries: 3
           script: |
             const {data} = await github.rest.repos.listDeployments({
-              owner: "fabsrc",
-              repo: "sandbox",
+              owner: github.repository_owner,
+              repo: github.repository,
+              ref: github.ref,
               environment: "new",
-              ref: "main"
             });
-            console.log(data.at(0));
-            console.log(data.at(1));
-            console.log(data.at(1) || "f4749d7f252b1d0f275811c5ebc9020dc73d11ab")
-      - run: echo "Deploy to new"
+
+            return {
+              previousSha: data.at(1) || "f4749d7f252b1d0f275811c5ebc9020dc73d11ab"
+            }
+      - run: |
+          echo "previous: ${{ steps.previous-deploy.outputs.previousSha }}"
+        

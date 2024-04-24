@@ -36,20 +36,15 @@ jobs:
           result-encoding: string
           retries: 3
           script: |
-            console.log(context.repo.owner);
-            console.log(context.repo.repo);
-            console.log(context.ref_name);
-            
-            const {data} = await github.rest.repos.listDeployments({
+            const { data } = await github.rest.repos.listDeployments({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: context.ref_name,
               environment: "new",
             });
 
             console.log(data);
 
-            return data.at(1) || "f4749d7f252b1d0f275811c5ebc9020dc73d11ab";
+            return data.at(1)?.sha || "f4749d7f252b1d0f275811c5ebc9020dc73d11ab";
       - run: |
           echo "previous: ${{ steps.previous-deploy.outputs.result }}"
         

@@ -45,9 +45,7 @@ jobs:
               environment: "new",
             });
 
-            return {
-              previousSha: data.at(1) || "f4749d7f252b1d0f275811c5ebc9020dc73d11ab"
-            }
+            return data.at(1) || "f4749d7f252b1d0f275811c5ebc9020dc73d11ab";
       - run: |
-          echo "previous: ${{ fromJSON(steps.previous-deploy.outputs.result).previousSha }}"
+          echo "previous: ${{ steps.previous-deploy.outputs.result }}"
         

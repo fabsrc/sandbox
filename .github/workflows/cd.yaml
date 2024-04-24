@@ -48,16 +48,17 @@ jobs:
             const firstSha = "f4749d7f252b1d0f275811c5ebc9020dc73d11ab";
             const sha = data.at(1)?.sha;
 
+            // Check if previousd deploy commit is still part of the branch
             if (sha) {
-              const { data: commit } = await github.rest.repos.getCommit({
+              const { data: compare } = await github.rest.repos.compareCommitsWithBasehead({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                ref: sha,
+                basehead: `${sha}...${{ github.sha }}`,
               });
+              
+              console.log(compare);
 
-              console.log(commit);
-
-              if (commit) {
+              if (compare.status !== "diverged") {
                 return sha;
               }
             }

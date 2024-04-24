@@ -35,15 +35,15 @@ jobs:
         with:
           result-encoding: string
           retries: 3
-          script: |
-            console.log(context);
-            
+          script: |            
             const {data} = await github.rest.repos.listDeployments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: context.ref,
               environment: "new",
             });
+
+            console.log(data);
 
             return data.at(1) || "f4749d7f252b1d0f275811c5ebc9020dc73d11ab";
       - run: |

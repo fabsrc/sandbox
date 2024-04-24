@@ -35,7 +35,12 @@ jobs:
         with:
           result-encoding: string
           retries: 3
-          script: |            
+          script: |
+            console.log(context.repo.owner);
+            console.log(context.repo.repo);
+            console.log(context.ref);
+            console.log(context.payload?.ref);
+            
             const {data} = await github.rest.repos.listDeployments({
               owner: context.repo.owner,
               repo: context.repo.repo,

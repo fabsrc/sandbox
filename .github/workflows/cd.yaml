@@ -9,9 +9,8 @@ on:
 
 jobs:
   deploy-new:
-    name: deploy-new
     runs-on: ubuntu-latest
-    environment: new
+    environment: sub/new
     steps:
       - uses: actions/checkout@v4
         with:
@@ -55,7 +54,7 @@ jobs:
             const variables = {
               owner: context.repo.owner,
               name: context.repo.repo,
-              environment: "new"
+              environment: "sub/new"
             };
             const result = await github.graphql(query, variables);
 

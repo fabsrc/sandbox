@@ -81,3 +81,4 @@ jobs:
       - run: |
           echo "previous: ${{ steps.previous-deploy.outputs.result }}"
           git diff ${{ steps.previous-deploy.outputs.result }}
+          exit 1
